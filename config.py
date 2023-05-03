@@ -10,6 +10,15 @@ print(f"Hostname: {hostname}")
 nicknames = ["SiamSavage","PangPapaya","TheTeaThief","GanjaGandalf","BakuBrawler","KababKing","SabaSaber","ChaiChaos","GazelleGigolo","ThaiTsunami"]
 
 
+def get_node_id():
+    # Get the server's IP address
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+
+    # Use the last octet of the IP address as the node ID
+    node_id = int(ip_address.split(".")[-1])
+    return node_id
+
 def ip(address):
     if address == nodes_addresses[0]:
         return ips[0]

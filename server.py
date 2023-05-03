@@ -5,11 +5,12 @@ from concurrent import futures
 import time
 import BookStore_pb2
 import BookStore_pb2_grpc
-from DataStore import Node, DataStoreProcess, Chain
+from DataStore import DataStoreProcess, Chain
+from config import *
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
-class BookshopService(BookStore_pb2_grpc.BookshopServicer):
+class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
     def __init__(self, node_id):
         self.node_id = node_id
         self.chain = Chain()
@@ -68,8 +69,8 @@ class BookshopService(BookStore_pb2_grpc.BookshopServicer):
         return BookStore_pb2.RestoreHeadResponse(message=f"Head restored to {head.id}.")
 
 def serve():
-    node_id = Node.get_node_id()
+    node_id = get_node_id()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    BookStore_pb2_grpc.add_BookshopServicer_to_server(BookshopService(node_id), server)
+    BookStore_pb2_grpc.add_BookStoreServicer_to_server(BookStoreService(node_id), server)
     server.add_insecure_port(f'[::]:{node_id}')
     server.start()

@@ -4,7 +4,7 @@ import BookStore_pb2
 import BookStore_pb2_grpc
 from tutorial import *
 
-class BookshopClient:
+class BookStoreClient:
     def __init__(self):
         self.port = input("Enter the server port: ")
         self.init_client_data()
@@ -15,7 +15,7 @@ class BookshopClient:
 
     def set_stub(self):
         self.channel = grpc.insecure_channel(f'{self.serverip}:{self.port}')
-        self.stub = BookStore_pb2_grpc.BookshopServicerStub(self.channel)
+        self.stub = BookStore_pb2_grpc.BookStoreStub(self.channel)
 
     def local_store_processes(self, k):
         request = BookStore_pb2.LocalStorePSRequest(k=k)
@@ -106,5 +106,5 @@ class BookshopClient:
 
 if __name__ == "__main__":
     bookshop_welcome()
-    client = BookshopClient()
+    client = BookStoreClient()
     client.run()
