@@ -74,3 +74,10 @@ def serve():
     BookStore_pb2_grpc.add_BookStoreServicer_to_server(BookStoreService(node_id), server)
     server.add_insecure_port(f'[::]:{node_id}')
     server.start()
+
+    print(f'Starting server. Listening on port {node_id}.')
+    server.wait_for_termination()
+
+
+if __name__ == "__main__":
+    serve()

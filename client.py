@@ -105,6 +105,6 @@ class BookStoreClient:
                 self.restore_head()
 
 if __name__ == "__main__":
-    bookshop_welcome()
+    bookstore_welcome()
     client = BookStoreClient()
     client.run()
