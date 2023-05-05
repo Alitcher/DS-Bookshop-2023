@@ -1,18 +1,32 @@
+#client.py
+
 import grpc
 import time
 import BookStore_pb2
 import BookStore_pb2_grpc
 from tutorial import *
+from config import *
+import random
 
 class BookStoreClient:
     def __init__(self):
-        self.port = input("Enter the server port: ")
+        self.port = int(input("Enter the server port: "))
         self.init_client_data()
+        self.access_to_server()
 
     def init_client_data(self):
-        self.serverip = "localhost"
+        self.serverip = ip(self.port)
+        self.reg_name = random.choice(nicknames)
         self.set_stub()
 
+    def access_to_server(self):
+        request = BookStore_pb2.AccessRequest()
+        request.name = self.reg_name
+        response = self.stub.access_to_server(request)
+        self.id = response.id
+        print(f"your id: {response.id} ")  
+        return response
+    
     def set_stub(self):
         self.channel = grpc.insecure_channel(f'{self.serverip}:{self.port}')
         self.stub = BookStore_pb2_grpc.BookStoreStub(self.channel)
@@ -30,10 +44,10 @@ class BookStoreClient:
     def list_chain(self):
         request = BookStore_pb2.ListChainRequest()
         response = self.stub.ListChain(request)
-        print(f"Current chain: {response.process_ids}")
+        print(f"Current chain: {response.chain}")
 
     def write_operation(self, book_name, price):
-        request = BookStore_pb2.WriteOperationRequest(book_name=book_name, price=price)
+        request = BookStore_pb2.WriteOperationRequest(book=book_name, price=price)
         response = self.stub.WriteOperation(request)
         print(response.message)
 
@@ -45,7 +59,7 @@ class BookStoreClient:
             print(f"{book.name} = {book.price} EUR")
 
     def read_operation(self, book_name):
-        request = BookStore_pb2.ReadOperationRequest(book_name=book_name)
+        request = BookStore_pb2.ReadOperationRequest(book=book_name)
         response = self.stub.ReadOperation(request)
         print(response.message)
 

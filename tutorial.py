@@ -1,3 +1,5 @@
+#tutorial.py
+
 commands = [
 'local-store-ps <k>',
 'create-chain',
@@ -27,3 +29,19 @@ def bookstore_welcome():
     print(f"11. Use the '{commands[9]}' command to restore the most recent removed head back to the chain.")
     print("Note: Each command should be run on the node where you want to perform the operation.")
     print("Thank you for using our online book shop system!")
+
+def bookstore_welcome2():
+    print("------------------WELCOME TO THE ONLINE BOOK SHOP!-----------------------------")
+    print("Here's how to use the system:")
+    print("Each node(computer) will act as a server and a client using the same port and id.")
+    print("1. Start by 'local-store-ps <k>' to create data store processes on your local node.")
+    print("2. Run the 'create-chain' to create a replication chain for strong data consistency once the data store processes are created.")
+    print("3. Use the 'write-operation' command to add or update the price of a book.")
+    print("4. Use the 'list-books' command to view the available books in the store.")
+    print("5. Use the 'read-operation' command to retrieve the price of a particular book.")
+    print("6. Use the 'list-chain' command to list the current status of the replication chain.")
+    print("7. Use the 'time-out' command to set the timeout for propagating write updates between processes.")
+    print("8. Use the 'data-status' command to list the status of each data item, whether clean or dirty.")
+    print("9. Use the 'remove-head' command to remove the current head from the chain.")
+    print("10. Use the 'restore-head' command to restore the most recent removed head back to the chain.")
+    print("Note: Each command should be run on the node where you want to perform the operation.")

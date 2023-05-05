@@ -34,3 +34,71 @@ class Chain:
 
             self.processes.append(process)
 
+    def list_books(self):
+        books = []
+        for process in self.processes:
+            for book, price in process.books.items():
+                books.append(f"{book} = {price} EUR")
+        return books
+
+    def read_operation(self, book_name):
+        for process in self.processes:
+            if book_name in process.books:
+                return process.books[book_name]
+        return "Not yet in the stock"
+
+    def set_timeout(self, timeout):
+        for process in self.processes:
+            process.timeout = timeout
+
+    def data_status(self):
+        status = []
+        for process in self.processes:
+            for book, state in process.book_status.items():
+                status.append(f"{book} - {state}")
+        return status
+
+    def remove_head(self):
+        if not self.head:
+            return "Chain is empty"
+        self.processes.remove(self.head)
+        self.head = self.head.successor
+        self.head.head = True
+        self.processes[0].head = True
+        return f"{self.processes[0].id} (Head) -> {' -> '.join([process.id for process in self.processes[1:]])} (Tail)"
+
+    def restore_head(self):
+        if not self.head:
+            return "Chain is empty"
+        if not self.head.successor:
+            return "Chain has only one process"
+        restored_head = self.head
+        deviation = 0
+        while restored_head.successor != self.tail:
+            restored_head = restored_head.successor
+            deviation += 1
+        if deviation > 5:
+            self.processes.remove(self.head)
+            self.head = self.head.successor
+            self.head.head = True
+            self.processes[0].head = True
+            return "Restored head permanently deleted"
+        else:
+            restored_head.successor = self.head
+            self.head.predecessor = restored_head
+            self.head = restored_head
+            self.head.head = True
+            self.processes[0].head = False
+            return "Head successfully restored and reconciled"
+
+    def write_operation(self, book_name, price):
+        if self.tail is None:
+            self.tail = self.processes[-1]
+        for process in self.processes:
+            if book_name in process.books:
+                process.books[book_name] = price
+                return f"{book_name} updated to {price} EUR"
+        self.tail.books[book_name] = price
+        return f"{book_name} added to the book store with price {price} EUR"
+
+   

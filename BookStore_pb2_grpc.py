@@ -14,6 +14,11 @@ class BookStoreStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.access_to_server = channel.unary_unary(
+                '/BookStore/access_to_server',
+                request_serializer=BookStore__pb2.AccessRequest.SerializeToString,
+                response_deserializer=BookStore__pb2.AccessResponse.FromString,
+                )
         self.LocalStorePS = channel.unary_unary(
                 '/BookStore/LocalStorePS',
                 request_serializer=BookStore__pb2.LocalStorePSRequest.SerializeToString,
@@ -68,6 +73,12 @@ class BookStoreStub(object):
 
 class BookStoreServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def access_to_server(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def LocalStorePS(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -132,6 +143,11 @@ class BookStoreServicer(object):
 
 def add_BookStoreServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'access_to_server': grpc.unary_unary_rpc_method_handler(
+                    servicer.access_to_server,
+                    request_deserializer=BookStore__pb2.AccessRequest.FromString,
+                    response_serializer=BookStore__pb2.AccessResponse.SerializeToString,
+            ),
             'LocalStorePS': grpc.unary_unary_rpc_method_handler(
                     servicer.LocalStorePS,
                     request_deserializer=BookStore__pb2.LocalStorePSRequest.FromString,
@@ -191,6 +207,23 @@ def add_BookStoreServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class BookStore(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def access_to_server(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/BookStore/access_to_server',
+            BookStore__pb2.AccessRequest.SerializeToString,
+            BookStore__pb2.AccessResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def LocalStorePS(request,

@@ -1,6 +1,9 @@
+//BookStore.proto
+
 syntax = "proto3";
 
 service BookStore {
+  rpc  access_to_server(AccessRequest) returns (AccessResponse) {}
   rpc LocalStorePS(LocalStorePSRequest) returns (LocalStorePSResponse) {}
   rpc CreateChain(CreateChainRequest) returns (CreateChainResponse) {}
   rpc ListChain(ListChainRequest) returns (ListChainResponse) {}
@@ -11,6 +14,14 @@ service BookStore {
   rpc DataStatus(DataStatusRequest) returns (DataStatusResponse) {}
   rpc RemoveHead(RemoveHeadRequest) returns (RemoveHeadResponse) {}
   rpc RestoreHead(RestoreHeadRequest) returns (RestoreHeadResponse) {}
+}
+
+message AccessRequest {
+  string name = 1 ;
+}
+
+message AccessResponse {
+  string id = 1;
 }
 
 message LocalStorePSRequest {

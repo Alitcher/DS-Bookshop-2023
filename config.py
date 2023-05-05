@@ -1,3 +1,5 @@
+#config.py
+
 import socket
 import grpc
 
@@ -7,7 +9,7 @@ ip_address = socket.gethostbyname(hostname)
 
 ips = ["192.168.246.98","192.168.246.148","192.168.246.197"] #gulnars, gandab window, ...,alicia's linux
 print(f"Hostname: {hostname}")
-nicknames = ["SiamSavage","PangPapaya","TheTeaThief","GanjaGandalf","BakuBrawler","KababKing","SabaSaber","ChaiChaos","GazelleGigolo","ThaiTsunami"]
+nicknames = ["Tail","Body","Head"]
 
 
 def get_node_id():
@@ -20,12 +22,13 @@ def get_node_id():
     return node_id
 
 def ip(address):
-    if address == nodes_addresses[0]:
-        return ips[0]
-    elif address == nodes_addresses[1]:
-        return ips[1]
-    else:
-        return ips[2]
+    return "localhost"
+    # if address == nodes_addresses[0]:
+    #     return ips[0]
+    # elif address == nodes_addresses[1]:
+    #     return ips[1]
+    # else:
+    #     return ips[2]
 
 time_limit = 60
 total_processes = 3
