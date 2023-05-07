@@ -58,7 +58,6 @@ class BookStoreClient:
     def write_operation(self, book_name, price):
         request = BookStore_pb2.WriteOperationRequest(book=book_name, price=price)
         response = self.stub.WriteOperation(request)
-        print(response.message)
 
     def list_books(self):
         request = BookStore_pb2.ListBooksRequest()
@@ -95,8 +94,11 @@ class BookStoreClient:
         response = self.stub.RestoreHead(request)
         print(response.message)
 
-    # Define other methods for other commands here
 
+    def set_chain_all_nodes(self):
+        response = self.stub.SetChainAllNodes()
+        print(response.message) 
+        
     def run(self):
         while True:
             command = input("Enter command: ")
@@ -112,20 +114,31 @@ class BookStoreClient:
                     self.local_store_processes(k)
             elif command == "create-chain" or command == "02" :
                 self.create_chain()
+            elif command == "020" :
+                self.create_chain()
             elif command == "list-chain" or command == "03" :
                 self.list_chain()
             elif command.startswith("write-operation") or command.startswith("04"):
-                book_name = command.split(" ")[1]
-                price = float(command.split(" ")[2])
-                self.write_operation(book_name, price)
+                if " " not in command:
+                    print("The command is missing an argument. How many process?")
+                else:
+                    book_name = command.split(" ")[1]
+                    price = float(command.split(" ")[2])
+                    self.write_operation(book_name, price)
             elif command == "list-books" or command == "05" :
                 self.list_books()
             elif command.startswith("read-operation") or command.startswith("06"):
-                book_name = command.split(" ")[1]
-                self.read_operation(book_name)
+                if " " not in command:
+                    print("The command is missing an argument. How many process?")
+                else:
+                    book_name = command.split(" ")[1]
+                    self.read_operation(book_name)
             elif command.startswith("time-out") or command.startswith("07"):
-                timeout = int(command.split(" ")[1])
-                self.set_timeout(timeout)
+                if " " not in command:
+                    print("The command is missing an argument. what is your time?")
+                else:
+                    timeout = int(command.split(" ")[1])
+                    self.set_timeout(timeout)
             elif command == "data-status" or command == "08" :
                 self.data_status()
             elif command == "remove-head" or command == "09" :

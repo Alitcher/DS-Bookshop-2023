@@ -84,6 +84,11 @@ class BookStoreStub(object):
                 request_serializer=BookStore__pb2.UpdateChainRequest.SerializeToString,
                 response_deserializer=BookStore__pb2.UpdateChainResponse.FromString,
                 )
+        self.SetChainAllNodes = channel.unary_unary(
+                '/BookStore/SetChainAllNodes',
+                request_serializer=BookStore__pb2.Empty.SerializeToString,
+                response_deserializer=BookStore__pb2.UpdateChainResponse.FromString,
+                )
 
 
 class BookStoreServicer(object):
@@ -173,6 +178,12 @@ class BookStoreServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetChainAllNodes(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_BookStoreServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -244,6 +255,11 @@ def add_BookStoreServicer_to_server(servicer, server):
             'UpdateChain': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateChain,
                     request_deserializer=BookStore__pb2.UpdateChainRequest.FromString,
+                    response_serializer=BookStore__pb2.UpdateChainResponse.SerializeToString,
+            ),
+            'SetChainAllNodes': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetChainAllNodes,
+                    request_deserializer=BookStore__pb2.Empty.FromString,
                     response_serializer=BookStore__pb2.UpdateChainResponse.SerializeToString,
             ),
     }
@@ -490,6 +506,23 @@ class BookStore(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/BookStore/UpdateChain',
             BookStore__pb2.UpdateChainRequest.SerializeToString,
+            BookStore__pb2.UpdateChainResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SetChainAllNodes(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/BookStore/SetChainAllNodes',
+            BookStore__pb2.Empty.SerializeToString,
             BookStore__pb2.UpdateChainResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

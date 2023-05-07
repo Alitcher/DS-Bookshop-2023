@@ -6,7 +6,7 @@ from concurrent import futures
 import time
 import BookStore_pb2
 import BookStore_pb2_grpc
-from DataStore import DataStoreProcess, Chain
+from DataStore import DataStoreProcess, Chain, Book
 from config import *
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
@@ -51,21 +51,12 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
             process_list.processes.extend([grpc_process])
         return process_list
 
-    def CreateChain(self, request, context):
-        if self.chain.processes:
-            recreate_chain = input("A chain already exists. Do you want to recreate the chain? (y/n): ")
-            if recreate_chain.lower() != "y":
-                # If the user decides to recreate the chain, clear the existing chain data
-                self.chain.processes.clear()
-            else:
-                process_ids = [process.id for process in self.chain.processes]
-                return BookStore_pb2.CreateChainResponse(process_ids=process_ids)
-
-        data_store_processes_copy = self.local_data_store_processes.copy()
+    def setchainallnodes(self):
+        self.data_store_processes_copy = self.local_data_store_processes.copy()
         # other nodes for their local_data_store_processes and append to data_store_processes_copy
         global port1
-        other_servers = [port for port in [50051, 50052, 50053] if port != port1]
-        for server_port in other_servers:
+        self.other_servers = [port for port in [50051, 50052, 50053] if port != port1]
+        for server_port in self.other_servers:
             global port1
             if server_port == port1:
                 continue
@@ -74,7 +65,7 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
                     stub = BookStore_pb2_grpc.BookStoreStub(channel)
                     response = stub.GetLocalDataStoreProcesses(BookStore_pb2.Empty())
                     for process in response.processes:
-                        data_store_processes_copy.append(DataStoreProcess(node_id=server_port, process_id=process.k, books=process.books))
+                        self.data_store_processes_copy.append(DataStoreProcess(node_id=server_port, process_id=process.k, books=process.books))
 
             except grpc.RpcError as e:
                 if e.code() == StatusCode.UNAVAILABLE:
@@ -84,20 +75,33 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
                     print(f"An error occurred while connecting to server {server_port}: {e}")
                     continue
 
-        for process in data_store_processes_copy:
+        for process in self.data_store_processes_copy:
             print(f"Process ID: {process.process_id}, Books: {process.books}")
 
-        self.chain.create_chain(data_store_processes_copy)
+    def SetChainAllNodes(self, request, context):
+        self.setchainallnodes()
+
+    def CreateChain(self, request, context):
+        if self.chain.processes:
+            recreate_chain = input("A chain already exists. Do you want to recreate the chain? (y/n): ")
+            if recreate_chain.lower() != "y":
+                # If the user decides to recreate the chain, clear the existing chain data
+                self.chain.processes.clear()
+            else:
+                process_ids = [process.id for process in self.chain.processes]
+                return BookStore_pb2.CreateChainResponse(process_ids=process_ids)
+        self.setchainallnodes()
+        self.chain.create_chain(self.local_data_store_processes)
         process_ids = [process.id for process in self.chain.processes]
 
-        # Update other nodes with the new chain
-        # for server_port in other_servers:
+        #Update other nodes with the new chain
+        # for server_port in self.other_servers:
         #     if server_port == port1:
         #         continue
         #     try:
         #         with grpc.insecure_channel(f"{ip(port1)}:{server_port}") as channel:
         #             stub = BookStore_pb2_grpc.BookStoreStub(channel)
-        #             processes = [BookStore_pb2.Process(id=process.id, k=process.process_id, books=process.books) for process in self.chain.processes]
+        #             processes = [BookStore_pb2.Process(id=str(server_port), k=2, books="") for process in self.chain.processes]
         #             response = stub.UpdateChain(BookStore_pb2.UpdateChainRequest(processes=processes))
         #             print(f"Updated chain on server {server_port}")
 
@@ -115,7 +119,7 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
     def UpdateChain(self, request, context):
         processes = [
             DataStoreProcess(
-                id=process.id,
+                id=2222,
                 process_id=process.k,
                 books=process.books
             )
@@ -145,14 +149,21 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
         book_name = request.book
         price = request.price
         print(f"client-{self.node_id} request {book_name} {price} EUR.")
+        for process in self.chain.processes:
+            for book_name, price in process.books.items():
+                process.book[book_name] = price
 
         response = self.chain.write_operation(book_name, price)
         return BookStore_pb2.WriteOperationResponse() #message=response
 
     def ListBooks(self, request, context):
-        books = self.chain.list_books()
-        response = "\n".join([f"{i+1}) {book}" for i, book in enumerate(books)])
-        return BookStore_pb2.ListBooksResponse(books=response)
+        books = []
+        for process in self.chain.processes:
+            for book_name, price in process.books.items():
+                books.append(Book(name=book_name, price=price))
+        response_books = [Book(name=book.name, price=book.price) for book in books]
+        response = BookStore_pb2.ListBooksResponse(books=response_books)
+        return response
 
     def ReadOperation(self, request, context):
         book_name = request.book

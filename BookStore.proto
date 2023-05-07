@@ -19,7 +19,9 @@ service BookStore {
   rpc access_to_server(AccessRequest) returns (AccessResponse) {}
   rpc logout(AccessRequest) returns(AccessResponse){}
   rpc GetLocalDataStoreProcesses(Empty) returns (ProcessList) {}
-  rpc UpdateChain(UpdateChainRequest) returns(UpdateChainResponse){};
+  rpc UpdateChain(UpdateChainRequest) returns(UpdateChainResponse){}
+  rpc SetChainAllNodes(Empty) returns(UpdateChainResponse){}
+
 }
 
 message UpdateChainRequest {
@@ -42,7 +44,7 @@ message Process {
 message Empty {}
 
 message AccessRequest {
-  string name = 1 ;
+  string name = 1;
 }
 
 message AccessResponse {
@@ -83,7 +85,12 @@ message WriteOperationResponse {}
 message ListBooksRequest {}
 
 message ListBooksResponse {
-  repeated string books = 1;
+  repeated Book books = 1;
+}
+
+message Book {
+  string name = 1;
+  double price = 2;
 }
 
 message ReadOperationRequest {

@@ -13,6 +13,12 @@ class DataStoreProcess:
         self.tail = False
         self.books = books if books else {}
 
+class Book:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+    
+
 class Chain:
     def __init__(self):
         self.head = None
@@ -37,11 +43,9 @@ class Chain:
             self.processes.append(process)
 
     def list_books(self):
-        books = []
-        for process in self.processes:
-            for book, price in process.books.items():
-                books.append(f"{book} = {price} EUR")
-        return books
+        for book_name, price in self.processes[0].books.items():
+                self.books.append(Book(name=book_name, price=price))
+        return self.books
 
     def read_operation(self, book_name):
         for process in self.processes:
