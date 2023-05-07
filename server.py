@@ -192,8 +192,8 @@ def serve():
     next_node_address = int(port2)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     BookStore_pb2_grpc.add_BookStoreServicer_to_server(BookStoreService(port1), server)
-    print(f'{ip(50051)}:{port1}')
-    server.add_insecure_port(f'{ip(50051)}:{port1}')
+    print(f'{ip(port1)}:{port1}')
+    server.add_insecure_port(f'{ip(port1)}:{port1}')
     server.start()
 
     print(f'Starting server. Listening on port {port1}.')
