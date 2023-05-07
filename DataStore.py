@@ -87,15 +87,22 @@ class Chain:
             self.processes.remove(self.head)
             self.head = self.head.successor
             self.head.head = True
-            self.processes[0].head = True
             return "Restored head permanently deleted"
         else:
-            restored_head.successor = self.head
-            self.head.predecessor = restored_head
-            self.head = restored_head
-            self.head.head = True
-            self.processes[0].head = False
-            return self.processes[0].id
+            # find the first process with timeout = 0 and make it the new head
+            new_head = self.tail
+            for process in reversed(self.processes):
+                if process.timeout == 0:
+                    new_head = process
+                else:
+                    break
+            new_head.successor = self.head
+            self.head.predecessor = new_head
+            new_head.head = True
+            self.head.head = False
+            self.head = new_head
+            return self.head.id
+        
 
     def write_operation(self, book_name, price):
         if self.tail is None:
