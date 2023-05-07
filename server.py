@@ -74,13 +74,7 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
                     stub = BookStore_pb2_grpc.BookStoreStub(channel)
                     response = stub.GetLocalDataStoreProcesses(BookStore_pb2.Empty())
                     for process in response.processes:
-                        data_store_processes_copy.append(
-                            BookStore_pb2.Process(
-                                id=process.id,
-                                k=process.process_id,
-                                books=process.books
-                            )
-                        )
+                        data_store_processes_copy.append(DataStoreProcess(node_id=server_port, process_id=process.k, books=process.books))
 
             except grpc.RpcError as e:
                 if e.code() == StatusCode.UNAVAILABLE:
@@ -91,28 +85,29 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
                     continue
 
         for process in data_store_processes_copy:
-            print(f"Process ID: {process.k}, Books: {process.books}")
+            print(f"Process ID: {process.process_id}, Books: {process.books}")
 
         self.chain.create_chain(data_store_processes_copy)
         process_ids = [process.id for process in self.chain.processes]
 
         # Update other nodes with the new chain
-        for server_port in other_servers:
-            if server_port == port1:
-                continue
-            try:
-                with grpc.insecure_channel(f"{ip(port1)}:{server_port}") as channel:
-                    stub = BookStore_pb2_grpc.BookStoreStub(channel)
-                    response = stub.UpdateChain(BookStore_pb2.UpdateChainRequest(processes=self.chain.processes))
-                    print(f"Updated chain on server {server_port}")
+        # for server_port in other_servers:
+        #     if server_port == port1:
+        #         continue
+        #     try:
+        #         with grpc.insecure_channel(f"{ip(port1)}:{server_port}") as channel:
+        #             stub = BookStore_pb2_grpc.BookStoreStub(channel)
+        #             processes = [BookStore_pb2.Process(id=process.id, k=process.process_id, books=process.books) for process in self.chain.processes]
+        #             response = stub.UpdateChain(BookStore_pb2.UpdateChainRequest(processes=processes))
+        #             print(f"Updated chain on server {server_port}")
 
-            except grpc.RpcError as e:
-                if e.code() == StatusCode.UNAVAILABLE:
-                    print(f"Server {server_port} is inactive.")
-                    continue
-                else:
-                    print(f"An error occurred while connecting to server {server_port}: {e}")
-                    continue
+        #     except grpc.RpcError as e:
+        #         if e.code() == StatusCode.UNAVAILABLE:
+        #             print(f"Server {server_port} is inactive.")
+        #             continue
+        #         else:
+        #             print(f"An error occurred while connecting to server {server_port}: {e}")
+        #             continue
 
         return BookStore_pb2.CreateChainResponse(process_ids=process_ids)
 

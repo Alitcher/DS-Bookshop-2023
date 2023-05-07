@@ -22,6 +22,14 @@ service BookStore {
   rpc UpdateChain(UpdateChainRequest) returns(UpdateChainResponse){};
 }
 
+message UpdateChainRequest {
+  repeated Process processes = 1;
+}
+
+message UpdateChainResponse {
+  string message = 1;
+}
+
 message ProcessList {
   repeated Process processes = 1;
 }
@@ -111,10 +119,3 @@ message RestoreHeadResponse {
   string new_head = 1;
 }
 
-message UpdateChainRequest {
-  repeated Process processes = 1;
-}
-
-message UpdateChainResponse {
-  string message = 1;
-}
