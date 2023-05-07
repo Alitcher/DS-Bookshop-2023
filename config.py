@@ -6,7 +6,7 @@ import grpc
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
-ips = ["10.10.152.85","10.10.152.85","10.10.159.255"] #gulnars, gandab window, ...,alicia's linux
+ips = ["10.10.152.85","10.10.152.85","10.10.153.137"] #gulnars, gandab window, ...,alicia's linux
 print(f"Hostname: {hostname}")
 nicknames = ["Tail","Body","Head"]
 
