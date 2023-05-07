@@ -3,11 +3,10 @@
 import socket
 import grpc
 
-your_selected_port = 50051
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
-ips = ["192.168.246.98","192.168.246.148","192.168.246.197"] #gulnars, gandab window, ...,alicia's linux
+ips = ["10.10.152.85","10.10.152.85","10.10.159.255"] #gulnars, gandab window, ...,alicia's linux
 print(f"Hostname: {hostname}")
 nicknames = ["Tail","Body","Head"]
 
@@ -22,13 +21,12 @@ def get_node_id():
     return node_id
 
 def ip(address):
-    return "localhost"
-    # if address == nodes_addresses[0]:
-    #     return ips[0]
-    # elif address == nodes_addresses[1]:
-    #     return ips[1]
-    # else:
-    #     return ips[2]
+    if address == nodes_addresses[0]:
+        return ips[0]
+    elif address == nodes_addresses[1]:
+        return ips[1]
+    else:
+        return ips[2]
 
 time_limit = 60
 total_processes = 3

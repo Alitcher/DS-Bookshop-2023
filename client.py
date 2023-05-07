@@ -35,6 +35,7 @@ class BookStoreClient:
         return response
     
     def set_stub(self):
+        print(f'{ip(50051)}:{self.port}')
         self.channel = grpc.insecure_channel(f'{self.serverip}:{self.port}')
         self.stub = BookStore_pb2_grpc.BookStoreStub(self.channel)
 
