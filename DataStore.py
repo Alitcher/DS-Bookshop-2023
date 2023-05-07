@@ -3,13 +3,15 @@
 import random
 
 class DataStoreProcess:
-    def __init__(self, node_id, process_id):
+    def __init__(self, node_id, process_id, books=None):
+        self.node_id = node_id
+        self.process_id = process_id
         self.id = f'Node{node_id}-PS{process_id}'
         self.predecessor = None
         self.successor = None
         self.head = False
         self.tail = False
-        self.books = {}
+        self.books = books if books else {}
 
 class Chain:
     def __init__(self):

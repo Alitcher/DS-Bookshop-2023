@@ -1,9 +1,11 @@
 //BookStore.proto
 
+
+//python -m grpc_tools.protoc -I . --python_out=. --grpc_python_out=. BookStore.proto
+
 syntax = "proto3";
 
 service BookStore {
-  rpc  access_to_server(AccessRequest) returns (AccessResponse) {}
   rpc LocalStorePS(LocalStorePSRequest) returns (LocalStorePSResponse) {}
   rpc CreateChain(CreateChainRequest) returns (CreateChainResponse) {}
   rpc ListChain(ListChainRequest) returns (ListChainResponse) {}
@@ -14,7 +16,22 @@ service BookStore {
   rpc DataStatus(DataStatusRequest) returns (DataStatusResponse) {}
   rpc RemoveHead(RemoveHeadRequest) returns (RemoveHeadResponse) {}
   rpc RestoreHead(RestoreHeadRequest) returns (RestoreHeadResponse) {}
+  rpc access_to_server(AccessRequest) returns (AccessResponse) {}
+  rpc logout(AccessRequest) returns(AccessResponse){}
+  rpc GetLocalDataStoreProcesses(Empty) returns (ProcessList) {}
+  rpc UpdateChain(UpdateChainRequest) returns(UpdateChainResponse){};
 }
+
+message ProcessList {
+  repeated Process processes = 1;
+}
+message Process {
+  string id = 1;
+  int32  k = 2;
+  string books = 3;
+}
+
+message Empty {}
 
 message AccessRequest {
   string name = 1 ;
@@ -32,10 +49,14 @@ message LocalStorePSResponse {
   repeated string process_ids = 1;
 }
 
-message CreateChainRequest {}
+message CreateChainRequest 
+{
+  repeated string process_ids = 1;
+}
 
 message CreateChainResponse {
-  repeated string process_ids = 1;
+  string message = 1;
+  repeated string process_ids = 2;
 }
 
 message ListChainRequest {}
@@ -88,4 +109,12 @@ message RestoreHeadRequest {}
 
 message RestoreHeadResponse {
   string new_head = 1;
+}
+
+message UpdateChainRequest {
+  repeated Process processes = 1;
+}
+
+message UpdateChainResponse {
+  string message = 1;
 }

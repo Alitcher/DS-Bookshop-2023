@@ -14,11 +14,6 @@ class BookStoreStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.access_to_server = channel.unary_unary(
-                '/BookStore/access_to_server',
-                request_serializer=BookStore__pb2.AccessRequest.SerializeToString,
-                response_deserializer=BookStore__pb2.AccessResponse.FromString,
-                )
         self.LocalStorePS = channel.unary_unary(
                 '/BookStore/LocalStorePS',
                 request_serializer=BookStore__pb2.LocalStorePSRequest.SerializeToString,
@@ -69,16 +64,30 @@ class BookStoreStub(object):
                 request_serializer=BookStore__pb2.RestoreHeadRequest.SerializeToString,
                 response_deserializer=BookStore__pb2.RestoreHeadResponse.FromString,
                 )
+        self.access_to_server = channel.unary_unary(
+                '/BookStore/access_to_server',
+                request_serializer=BookStore__pb2.AccessRequest.SerializeToString,
+                response_deserializer=BookStore__pb2.AccessResponse.FromString,
+                )
+        self.logout = channel.unary_unary(
+                '/BookStore/logout',
+                request_serializer=BookStore__pb2.AccessRequest.SerializeToString,
+                response_deserializer=BookStore__pb2.AccessResponse.FromString,
+                )
+        self.GetLocalDataStoreProcesses = channel.unary_unary(
+                '/BookStore/GetLocalDataStoreProcesses',
+                request_serializer=BookStore__pb2.Empty.SerializeToString,
+                response_deserializer=BookStore__pb2.ProcessList.FromString,
+                )
+        self.UpdateChain = channel.unary_unary(
+                '/BookStore/UpdateChain',
+                request_serializer=BookStore__pb2.UpdateChainRequest.SerializeToString,
+                response_deserializer=BookStore__pb2.UpdateChainResponse.FromString,
+                )
 
 
 class BookStoreServicer(object):
     """Missing associated documentation comment in .proto file."""
-
-    def access_to_server(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def LocalStorePS(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -140,14 +149,33 @@ class BookStoreServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def access_to_server(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def logout(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetLocalDataStoreProcesses(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateChain(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_BookStoreServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'access_to_server': grpc.unary_unary_rpc_method_handler(
-                    servicer.access_to_server,
-                    request_deserializer=BookStore__pb2.AccessRequest.FromString,
-                    response_serializer=BookStore__pb2.AccessResponse.SerializeToString,
-            ),
             'LocalStorePS': grpc.unary_unary_rpc_method_handler(
                     servicer.LocalStorePS,
                     request_deserializer=BookStore__pb2.LocalStorePSRequest.FromString,
@@ -198,6 +226,26 @@ def add_BookStoreServicer_to_server(servicer, server):
                     request_deserializer=BookStore__pb2.RestoreHeadRequest.FromString,
                     response_serializer=BookStore__pb2.RestoreHeadResponse.SerializeToString,
             ),
+            'access_to_server': grpc.unary_unary_rpc_method_handler(
+                    servicer.access_to_server,
+                    request_deserializer=BookStore__pb2.AccessRequest.FromString,
+                    response_serializer=BookStore__pb2.AccessResponse.SerializeToString,
+            ),
+            'logout': grpc.unary_unary_rpc_method_handler(
+                    servicer.logout,
+                    request_deserializer=BookStore__pb2.AccessRequest.FromString,
+                    response_serializer=BookStore__pb2.AccessResponse.SerializeToString,
+            ),
+            'GetLocalDataStoreProcesses': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLocalDataStoreProcesses,
+                    request_deserializer=BookStore__pb2.Empty.FromString,
+                    response_serializer=BookStore__pb2.ProcessList.SerializeToString,
+            ),
+            'UpdateChain': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateChain,
+                    request_deserializer=BookStore__pb2.UpdateChainRequest.FromString,
+                    response_serializer=BookStore__pb2.UpdateChainResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'BookStore', rpc_method_handlers)
@@ -207,23 +255,6 @@ def add_BookStoreServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class BookStore(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def access_to_server(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/BookStore/access_to_server',
-            BookStore__pb2.AccessRequest.SerializeToString,
-            BookStore__pb2.AccessResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def LocalStorePS(request,
@@ -392,5 +423,73 @@ class BookStore(object):
         return grpc.experimental.unary_unary(request, target, '/BookStore/RestoreHead',
             BookStore__pb2.RestoreHeadRequest.SerializeToString,
             BookStore__pb2.RestoreHeadResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def access_to_server(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/BookStore/access_to_server',
+            BookStore__pb2.AccessRequest.SerializeToString,
+            BookStore__pb2.AccessResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def logout(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/BookStore/logout',
+            BookStore__pb2.AccessRequest.SerializeToString,
+            BookStore__pb2.AccessResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetLocalDataStoreProcesses(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/BookStore/GetLocalDataStoreProcesses',
+            BookStore__pb2.Empty.SerializeToString,
+            BookStore__pb2.ProcessList.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateChain(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/BookStore/UpdateChain',
+            BookStore__pb2.UpdateChainRequest.SerializeToString,
+            BookStore__pb2.UpdateChainResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

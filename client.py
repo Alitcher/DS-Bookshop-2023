@@ -13,6 +13,7 @@ class BookStoreClient:
         self.port = int(input("Enter the server port: "))
         self.init_client_data()
         self.access_to_server()
+        self.process_ids_list = []
 
     def init_client_data(self):
         self.serverip = ip(self.port)
@@ -27,17 +28,25 @@ class BookStoreClient:
         print(f"your id: {response.id} ")  
         return response
     
+    def logout(self):
+        req = BookStore_pb2.AccessRequest(name=self.reg_name)
+        response = self.stub.logout(req)
+        print(response.id)
+        return response
+    
     def set_stub(self):
         self.channel = grpc.insecure_channel(f'{self.serverip}:{self.port}')
         self.stub = BookStore_pb2_grpc.BookStoreStub(self.channel)
 
     def local_store_processes(self, k):
+        self.process_ids_list.clear()
         request = BookStore_pb2.LocalStorePSRequest(k=k)
         response = self.stub.LocalStorePS(request)
         print(f"Created {k} local data store processes. Process IDs: {response.process_ids}")
+        self.process_ids_list = list(response.process_ids)
 
     def create_chain(self):
-        request = BookStore_pb2.CreateChainRequest()
+        request = BookStore_pb2.CreateChainRequest(process_ids=self.process_ids_list)
         response = self.stub.CreateChain(request)
         print(f"Chain created with processes: {response.process_ids}")
 
@@ -67,6 +76,7 @@ class BookStoreClient:
         request = BookStore_pb2.SetTimeoutRequest(timeout=timeout)
         response = self.stub.SetTimeout(request)
         print(response.message)
+        
 
     def data_status(self):
         request = BookStore_pb2.DataStatusRequest()
@@ -91,34 +101,46 @@ class BookStoreClient:
         while True:
             command = input("Enter command: ")
             if command == "quit":
+                self.logout()
+                time.sleep(1)
                 break
-            elif command.startswith("local-store-ps"):
-                k = int(command.split(" ")[1])
-                self.local_store_processes(k)
-            elif command == "create-chain":
+            elif command.startswith("local-store-ps") or command.startswith("01"):
+                if " " not in command:
+                    print("The command is missing an argument. How many process?")
+                else:
+                    k = int(command.split(" ")[1])
+                    self.local_store_processes(k)
+            elif command == "create-chain" or command == "02" :
                 self.create_chain()
-            elif command == "list-chain":
+            elif command == "list-chain" or command == "03" :
                 self.list_chain()
-            elif command.startswith("write-operation"):
+            elif command.startswith("write-operation") or command.startswith("04"):
                 book_name = command.split(" ")[1]
                 price = float(command.split(" ")[2])
                 self.write_operation(book_name, price)
-            elif command == "list-books":
+            elif command == "list-books" or command == "05" :
                 self.list_books()
-            elif command.startswith("read-operation"):
+            elif command.startswith("read-operation") or command.startswith("06"):
                 book_name = command.split(" ")[1]
                 self.read_operation(book_name)
-            elif command.startswith("time-out"):
+            elif command.startswith("time-out") or command.startswith("07"):
                 timeout = int(command.split(" ")[1])
                 self.set_timeout(timeout)
-            elif command == "data-status":
+            elif command == "data-status" or command == "08" :
                 self.data_status()
-            elif command == "remove-head":
+            elif command == "remove-head" or command == "09" :
                 self.remove_head()
-            elif command == "restore-head":
+            elif command == "restore-head" or command == "10" :
                 self.restore_head()
+            else:
+                print("invalid command try again")
+            
+        client.logout()
 
 if __name__ == "__main__":
     bookstore_welcome()
     client = BookStoreClient()
-    client.run()
+    try:
+        client.run()
+    except KeyboardInterrupt:
+        client.logout()
