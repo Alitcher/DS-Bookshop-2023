@@ -12,6 +12,7 @@ class DataStoreProcess:
         self.head = False
         self.tail = False
         self.books = books if books else {}
+        self.removed_heads = []
 
 class Book:
     def __init__(self, name, price):
@@ -67,6 +68,7 @@ class Chain:
     def remove_head(self):
         if not self.head:
             return "Chain is empty"
+        self.removed_heads.append(self.head)
         self.processes.remove(self.head)
         self.head = self.head.successor
         self.head.head = True

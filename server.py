@@ -61,7 +61,7 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
             if server_port == port1:
                 continue
             try:
-                with grpc.insecure_channel(f"{ip(port1)}:{server_port}") as channel:
+                with grpc.insecure_channel(f"{ip(server_port)}:{server_port}") as channel:
                     stub = BookStore_pb2_grpc.BookStoreStub(channel)
                     response = stub.GetLocalDataStoreProcesses(BookStore_pb2.Empty())
                     for process in response.processes:
