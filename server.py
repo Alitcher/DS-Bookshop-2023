@@ -76,7 +76,7 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
                     continue
 
         for process in self.data_store_processes_copy:
-            print(f"Process ID: {process.process_id}, Books: {process.books}")
+            print(f"{port1} Process ID: {process.process_id}, Books: {process.books}")
 
     def SetChainAllNodes(self, request, context):
         self.setchainallnodes()
@@ -91,7 +91,7 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
                 process_ids = [process.id for process in self.chain.processes]
                 return BookStore_pb2.CreateChainResponse(process_ids=process_ids)
         self.setchainallnodes()
-        self.chain.create_chain(self.local_data_store_processes)
+        self.chain.create_chain(self.data_store_processes_copy)
         process_ids = [process.id for process in self.chain.processes]
 
         #Update other nodes with the new chain
@@ -149,44 +149,41 @@ class BookStoreService(BookStore_pb2_grpc.BookStoreServicer):
         book_name = request.book
         price = request.price
         print(f"client-{self.node_id} request {book_name} {price} EUR.")
-        for process in self.chain.processes:
-            for book_name, price in process.books.items():
-                process.book[book_name] = price
-
+        
         response = self.chain.write_operation(book_name, price)
-        return BookStore_pb2.WriteOperationResponse() #message=response
+        return BookStore_pb2.WriteOperationResponse(message=response)
 
     def ListBooks(self, request, context):
-        books = []
-        for process in self.chain.processes:
-            for book_name, price in process.books.items():
-                books.append(Book(name=book_name, price=price))
-        response_books = [Book(name=book.name, price=book.price) for book in books]
+        for book, price in self.chain.processes[len(self.chain.processes)-1].books.items():
+            print(f"{book} = {price} EUR")
+        response_books = [{"name": book, "price": price} for book, price in self.chain.processes[len(self.chain.processes)-1].books.items()]
         response = BookStore_pb2.ListBooksResponse(books=response_books)
         return response
 
     def ReadOperation(self, request, context):
         book_name = request.book
-        response = self.chain.read_operation(book_name)
-        return BookStore_pb2.ReadOperationResponse(price=response)
+        message = self.chain.read_operation(book_name)
+        exist = False if message == "Not yet in the stock" else True
+        response = message if exist else -1
+        return BookStore_pb2.ReadOperationResponse(price=response, exists = exist)
 
-    def TimeOut(self, request, context):
+    def Timeout(self, request, context):
         timeout = request.timeout
         self.chain.set_timeout(timeout)
-        return BookStore_pb2.TimeOutResponse(message=f"Timeout set to {timeout} seconds.")
+        return BookStore_pb2.TimeoutResponse(message=f"Timeout set to {timeout} seconds.")
 
     def DataStatus(self, request, context):
         status = self.chain.data_status()
         response = "\n".join([f"{i+1}) {book} - {stat}" for i, (book, stat) in enumerate(status.items())])
-        return BookStore_pb2.DataStatusResponse(data=response)
+        return BookStore_pb2.DataStatusResponse(statuses=response)
 
     def RemoveHead(self, request, context):
         self.chain.remove_head()
-        return BookStore_pb2.RemoveHeadResponse(message="Head removed.")
+        return BookStore_pb2.RemoveHeadResponse(new_head="Head removed.")
 
     def RestoreHead(self, request, context):
         head = self.chain.restore_head()
-        return BookStore_pb2.RestoreHeadResponse(message=f"Head restored to {head.id}.")
+        return BookStore_pb2.RestoreHeadResponse(new_head=f"{ self.chain.processes[0].id}")
 
 def serve():
     global port1

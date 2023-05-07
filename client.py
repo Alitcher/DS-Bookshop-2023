@@ -58,6 +58,7 @@ class BookStoreClient:
     def write_operation(self, book_name, price):
         request = BookStore_pb2.WriteOperationRequest(book=book_name, price=price)
         response = self.stub.WriteOperation(request)
+        print(f"{response.message}")
 
     def list_books(self):
         request = BookStore_pb2.ListBooksRequest()
@@ -69,11 +70,11 @@ class BookStoreClient:
     def read_operation(self, book_name):
         request = BookStore_pb2.ReadOperationRequest(book=book_name)
         response = self.stub.ReadOperation(request)
-        print(response.message)
+        print(response.price)
 
     def set_timeout(self, timeout):
-        request = BookStore_pb2.SetTimeoutRequest(timeout=timeout)
-        response = self.stub.SetTimeout(request)
+        request = BookStore_pb2.TimeoutRequest(timeout=timeout)
+        response = self.stub.Timeout(request)
         print(response.message)
         
 
@@ -87,16 +88,16 @@ class BookStoreClient:
     def remove_head(self):
         request = BookStore_pb2.RemoveHeadRequest()
         response = self.stub.RemoveHead(request)
-        print(f"New chain: {response.process_ids}")
+        print(f"New chain: {response.new_head}")
 
     def restore_head(self):
         request = BookStore_pb2.RestoreHeadRequest()
         response = self.stub.RestoreHead(request)
-        print(response.message)
+        print(response.new_head)
 
 
     def set_chain_all_nodes(self):
-        response = self.stub.SetChainAllNodes()
+        response = self.stub.SetChainAllNodes(BookStore_pb2.Empty())
         print(response.message) 
         
     def run(self):
@@ -115,7 +116,7 @@ class BookStoreClient:
             elif command == "create-chain" or command == "02" :
                 self.create_chain()
             elif command == "020" :
-                self.create_chain()
+                self.set_chain_all_nodes()
             elif command == "list-chain" or command == "03" :
                 self.list_chain()
             elif command.startswith("write-operation") or command.startswith("04"):

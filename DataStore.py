@@ -95,7 +95,7 @@ class Chain:
             self.head = restored_head
             self.head.head = True
             self.processes[0].head = False
-            return "Head successfully restored and reconciled"
+            return self.processes[0].id
 
     def write_operation(self, book_name, price):
         if self.tail is None:

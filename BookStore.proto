@@ -80,7 +80,10 @@ message WriteOperationRequest {
   double price = 2;
 }
 
-message WriteOperationResponse {}
+message WriteOperationResponse 
+{
+  string message = 1;
+}
 
 message ListBooksRequest {}
 
@@ -106,7 +109,11 @@ message TimeoutRequest {
   int32 timeout = 1;
 }
 
-message TimeoutResponse {}
+message TimeoutResponse 
+{
+string message = 1;
+
+}
 
 message DataStatusRequest {}
 

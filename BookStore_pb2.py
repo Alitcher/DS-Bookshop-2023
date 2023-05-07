@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0f\x42ookStore.proto\"1\n\x12UpdateChainRequest\x12\x1b\n\tprocesses\x18\x01 \x03(\x0b\x32\x08.Process\"&\n\x13UpdateChainResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"*\n\x0bProcessList\x12\x1b\n\tprocesses\x18\x01 \x03(\x0b\x32\x08.Process\"/\n\x07Process\x12\n\n\x02id\x18\x01 \x01(\t\x12\t\n\x01k\x18\x02 \x01(\x05\x12\r\n\x05\x62ooks\x18\x03 \x01(\t\"\x07\n\x05\x45mpty\"\x1d\n\rAccessRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1c\n\x0e\x41\x63\x63\x65ssResponse\x12\n\n\x02id\x18\x01 \x01(\t\" \n\x13LocalStorePSRequest\x12\t\n\x01k\x18\x01 \x01(\x05\"+\n\x14LocalStorePSResponse\x12\x13\n\x0bprocess_ids\x18\x01 \x03(\t\")\n\x12\x43reateChainRequest\x12\x13\n\x0bprocess_ids\x18\x01 \x03(\t\";\n\x13\x43reateChainResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x13\n\x0bprocess_ids\x18\x02 \x03(\t\"\x12\n\x10ListChainRequest\"\"\n\x11ListChainResponse\x12\r\n\x05\x63hain\x18\x01 \x01(\t\"4\n\x15WriteOperationRequest\x12\x0c\n\x04\x62ook\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x01\"\x18\n\x16WriteOperationResponse\"\x12\n\x10ListBooksRequest\")\n\x11ListBooksResponse\x12\x14\n\x05\x62ooks\x18\x01 \x03(\x0b\x32\x05.Book\"#\n\x04\x42ook\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x01\"$\n\x14ReadOperationRequest\x12\x0c\n\x04\x62ook\x18\x01 \x01(\t\"6\n\x15ReadOperationResponse\x12\r\n\x05price\x18\x01 \x01(\x01\x12\x0e\n\x06\x65xists\x18\x02 \x01(\x08\"!\n\x0eTimeoutRequest\x12\x0f\n\x07timeout\x18\x01 \x01(\x05\"\x11\n\x0fTimeoutResponse\"\x13\n\x11\x44\x61taStatusRequest\"&\n\x12\x44\x61taStatusResponse\x12\x10\n\x08statuses\x18\x01 \x03(\t\"\x13\n\x11RemoveHeadRequest\"&\n\x12RemoveHeadResponse\x12\x10\n\x08new_head\x18\x01 \x01(\t\"\x14\n\x12RestoreHeadRequest\"\'\n\x13RestoreHeadResponse\x12\x10\n\x08new_head\x18\x01 \x01(\t2\xe1\x06\n\tBookStore\x12=\n\x0cLocalStorePS\x12\x14.LocalStorePSRequest\x1a\x15.LocalStorePSResponse\"\x00\x12:\n\x0b\x43reateChain\x12\x13.CreateChainRequest\x1a\x14.CreateChainResponse\"\x00\x12\x34\n\tListChain\x12\x11.ListChainRequest\x1a\x12.ListChainResponse\"\x00\x12\x43\n\x0eWriteOperation\x12\x16.WriteOperationRequest\x1a\x17.WriteOperationResponse\"\x00\x12\x34\n\tListBooks\x12\x11.ListBooksRequest\x1a\x12.ListBooksResponse\"\x00\x12@\n\rReadOperation\x12\x15.ReadOperationRequest\x1a\x16.ReadOperationResponse\"\x00\x12.\n\x07Timeout\x12\x0f.TimeoutRequest\x1a\x10.TimeoutResponse\"\x00\x12\x37\n\nDataStatus\x12\x12.DataStatusRequest\x1a\x13.DataStatusResponse\"\x00\x12\x37\n\nRemoveHead\x12\x12.RemoveHeadRequest\x1a\x13.RemoveHeadResponse\"\x00\x12:\n\x0bRestoreHead\x12\x13.RestoreHeadRequest\x1a\x14.RestoreHeadResponse\"\x00\x12\x35\n\x10\x61\x63\x63\x65ss_to_server\x12\x0e.AccessRequest\x1a\x0f.AccessResponse\"\x00\x12+\n\x06logout\x12\x0e.AccessRequest\x1a\x0f.AccessResponse\"\x00\x12\x34\n\x1aGetLocalDataStoreProcesses\x12\x06.Empty\x1a\x0c.ProcessList\"\x00\x12:\n\x0bUpdateChain\x12\x13.UpdateChainRequest\x1a\x14.UpdateChainResponse\"\x00\x12\x32\n\x10SetChainAllNodes\x12\x06.Empty\x1a\x14.UpdateChainResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0f\x42ookStore.proto\"1\n\x12UpdateChainRequest\x12\x1b\n\tprocesses\x18\x01 \x03(\x0b\x32\x08.Process\"&\n\x13UpdateChainResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"*\n\x0bProcessList\x12\x1b\n\tprocesses\x18\x01 \x03(\x0b\x32\x08.Process\"/\n\x07Process\x12\n\n\x02id\x18\x01 \x01(\t\x12\t\n\x01k\x18\x02 \x01(\x05\x12\r\n\x05\x62ooks\x18\x03 \x01(\t\"\x07\n\x05\x45mpty\"\x1d\n\rAccessRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1c\n\x0e\x41\x63\x63\x65ssResponse\x12\n\n\x02id\x18\x01 \x01(\t\" \n\x13LocalStorePSRequest\x12\t\n\x01k\x18\x01 \x01(\x05\"+\n\x14LocalStorePSResponse\x12\x13\n\x0bprocess_ids\x18\x01 \x03(\t\")\n\x12\x43reateChainRequest\x12\x13\n\x0bprocess_ids\x18\x01 \x03(\t\";\n\x13\x43reateChainResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x13\n\x0bprocess_ids\x18\x02 \x03(\t\"\x12\n\x10ListChainRequest\"\"\n\x11ListChainResponse\x12\r\n\x05\x63hain\x18\x01 \x01(\t\"4\n\x15WriteOperationRequest\x12\x0c\n\x04\x62ook\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x01\")\n\x16WriteOperationResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x12\n\x10ListBooksRequest\")\n\x11ListBooksResponse\x12\x14\n\x05\x62ooks\x18\x01 \x03(\x0b\x32\x05.Book\"#\n\x04\x42ook\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05price\x18\x02 \x01(\x01\"$\n\x14ReadOperationRequest\x12\x0c\n\x04\x62ook\x18\x01 \x01(\t\"6\n\x15ReadOperationResponse\x12\r\n\x05price\x18\x01 \x01(\x01\x12\x0e\n\x06\x65xists\x18\x02 \x01(\x08\"!\n\x0eTimeoutRequest\x12\x0f\n\x07timeout\x18\x01 \x01(\x05\"\"\n\x0fTimeoutResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x13\n\x11\x44\x61taStatusRequest\"&\n\x12\x44\x61taStatusResponse\x12\x10\n\x08statuses\x18\x01 \x03(\t\"\x13\n\x11RemoveHeadRequest\"&\n\x12RemoveHeadResponse\x12\x10\n\x08new_head\x18\x01 \x01(\t\"\x14\n\x12RestoreHeadRequest\"\'\n\x13RestoreHeadResponse\x12\x10\n\x08new_head\x18\x01 \x01(\t2\xe1\x06\n\tBookStore\x12=\n\x0cLocalStorePS\x12\x14.LocalStorePSRequest\x1a\x15.LocalStorePSResponse\"\x00\x12:\n\x0b\x43reateChain\x12\x13.CreateChainRequest\x1a\x14.CreateChainResponse\"\x00\x12\x34\n\tListChain\x12\x11.ListChainRequest\x1a\x12.ListChainResponse\"\x00\x12\x43\n\x0eWriteOperation\x12\x16.WriteOperationRequest\x1a\x17.WriteOperationResponse\"\x00\x12\x34\n\tListBooks\x12\x11.ListBooksRequest\x1a\x12.ListBooksResponse\"\x00\x12@\n\rReadOperation\x12\x15.ReadOperationRequest\x1a\x16.ReadOperationResponse\"\x00\x12.\n\x07Timeout\x12\x0f.TimeoutRequest\x1a\x10.TimeoutResponse\"\x00\x12\x37\n\nDataStatus\x12\x12.DataStatusRequest\x1a\x13.DataStatusResponse\"\x00\x12\x37\n\nRemoveHead\x12\x12.RemoveHeadRequest\x1a\x13.RemoveHeadResponse\"\x00\x12:\n\x0bRestoreHead\x12\x13.RestoreHeadRequest\x1a\x14.RestoreHeadResponse\"\x00\x12\x35\n\x10\x61\x63\x63\x65ss_to_server\x12\x0e.AccessRequest\x1a\x0f.AccessResponse\"\x00\x12+\n\x06logout\x12\x0e.AccessRequest\x1a\x0f.AccessResponse\"\x00\x12\x34\n\x1aGetLocalDataStoreProcesses\x12\x06.Empty\x1a\x0c.ProcessList\"\x00\x12:\n\x0bUpdateChain\x12\x13.UpdateChainRequest\x1a\x14.UpdateChainResponse\"\x00\x12\x32\n\x10SetChainAllNodes\x12\x06.Empty\x1a\x14.UpdateChainResponse\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'BookStore_pb2', globals())
@@ -49,33 +49,33 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _WRITEOPERATIONREQUEST._serialized_start=512
   _WRITEOPERATIONREQUEST._serialized_end=564
   _WRITEOPERATIONRESPONSE._serialized_start=566
-  _WRITEOPERATIONRESPONSE._serialized_end=590
-  _LISTBOOKSREQUEST._serialized_start=592
-  _LISTBOOKSREQUEST._serialized_end=610
-  _LISTBOOKSRESPONSE._serialized_start=612
-  _LISTBOOKSRESPONSE._serialized_end=653
-  _BOOK._serialized_start=655
-  _BOOK._serialized_end=690
-  _READOPERATIONREQUEST._serialized_start=692
-  _READOPERATIONREQUEST._serialized_end=728
-  _READOPERATIONRESPONSE._serialized_start=730
-  _READOPERATIONRESPONSE._serialized_end=784
-  _TIMEOUTREQUEST._serialized_start=786
-  _TIMEOUTREQUEST._serialized_end=819
-  _TIMEOUTRESPONSE._serialized_start=821
-  _TIMEOUTRESPONSE._serialized_end=838
-  _DATASTATUSREQUEST._serialized_start=840
-  _DATASTATUSREQUEST._serialized_end=859
-  _DATASTATUSRESPONSE._serialized_start=861
-  _DATASTATUSRESPONSE._serialized_end=899
-  _REMOVEHEADREQUEST._serialized_start=901
-  _REMOVEHEADREQUEST._serialized_end=920
-  _REMOVEHEADRESPONSE._serialized_start=922
-  _REMOVEHEADRESPONSE._serialized_end=960
-  _RESTOREHEADREQUEST._serialized_start=962
-  _RESTOREHEADREQUEST._serialized_end=982
-  _RESTOREHEADRESPONSE._serialized_start=984
-  _RESTOREHEADRESPONSE._serialized_end=1023
-  _BOOKSTORE._serialized_start=1026
-  _BOOKSTORE._serialized_end=1891
+  _WRITEOPERATIONRESPONSE._serialized_end=607
+  _LISTBOOKSREQUEST._serialized_start=609
+  _LISTBOOKSREQUEST._serialized_end=627
+  _LISTBOOKSRESPONSE._serialized_start=629
+  _LISTBOOKSRESPONSE._serialized_end=670
+  _BOOK._serialized_start=672
+  _BOOK._serialized_end=707
+  _READOPERATIONREQUEST._serialized_start=709
+  _READOPERATIONREQUEST._serialized_end=745
+  _READOPERATIONRESPONSE._serialized_start=747
+  _READOPERATIONRESPONSE._serialized_end=801
+  _TIMEOUTREQUEST._serialized_start=803
+  _TIMEOUTREQUEST._serialized_end=836
+  _TIMEOUTRESPONSE._serialized_start=838
+  _TIMEOUTRESPONSE._serialized_end=872
+  _DATASTATUSREQUEST._serialized_start=874
+  _DATASTATUSREQUEST._serialized_end=893
+  _DATASTATUSRESPONSE._serialized_start=895
+  _DATASTATUSRESPONSE._serialized_end=933
+  _REMOVEHEADREQUEST._serialized_start=935
+  _REMOVEHEADREQUEST._serialized_end=954
+  _REMOVEHEADRESPONSE._serialized_start=956
+  _REMOVEHEADRESPONSE._serialized_end=994
+  _RESTOREHEADREQUEST._serialized_start=996
+  _RESTOREHEADREQUEST._serialized_end=1016
+  _RESTOREHEADRESPONSE._serialized_start=1018
+  _RESTOREHEADRESPONSE._serialized_end=1057
+  _BOOKSTORE._serialized_start=1060
+  _BOOKSTORE._serialized_end=1925
 # @@protoc_insertion_point(module_scope)
